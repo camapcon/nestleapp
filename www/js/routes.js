@@ -44,6 +44,27 @@ var routes = [
     path: '/outstock_enterdata/:productid/',
     componentUrl: './pages/outstock_enterdata.html'
   },
+  // Inventory Report pages
+  {
+    path: '/inventory_report/',
+    componentUrl: './pages/inventory_report.html',
+    name: 'inventory_report'
+  },
+  {
+    name: 'inventory_product',
+    path: '/inventory_product/:categoryid/',
+    componentUrl: './pages/inventory_product.html'
+  },
+  {
+    name: 'inventory_product_brand',
+    path: '/inventory_product_brand/:categoryid/:brand/',
+    componentUrl: './pages/inventory_product_brand.html'
+  },
+  {
+    name: 'inventory_enterdata',
+    path: '/inventory_enterdata/:productid/',
+    componentUrl: './pages/inventory_enterdata.html'
+  },
   // Status page
   {
     path: '/status/',

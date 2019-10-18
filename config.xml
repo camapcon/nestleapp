@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.nestle.pgapp1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.nestle.pgapp1" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Nestle PG</name>
     <description>Market Report Mobile App for PG</description>
     <author email="phu.tran@openfireco.com" href="http://openfireco.com">OpenFire</author>

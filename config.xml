@@ -81,6 +81,18 @@
       <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
         <string>Need location access to checkin</string>
       </edit-config>
+      
+      <edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
+        <string>Need location access to make sure PG work in area.</string>
+      </edit-config>
+      
+      <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+        <string>App would like to access the camera.</string>
+      </edit-config>
+      
+      <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+        <string>App would like to access the camera.</string>
+      </edit-config>
     </platform>
     <platform name="android">
       <preference name="SplashMaintainAspectRatio" value="true"/>

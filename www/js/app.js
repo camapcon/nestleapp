@@ -12,7 +12,7 @@ if (document.location.search.indexOf('theme=') >= 0) {
 
 // Init App
 var app = new Framework7({
-  id: 'com.nestle.pgapp',
+  id: 'com.nestle.pgapp1',
   root: '#app',
   init: false,
   theme: theme,

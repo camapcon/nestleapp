@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.nestle.pgapp1" version="1.3" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.nestle.pgapp1" version="1.4" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>Nestle PG</name>
     <description>Market Report Mobile App for PG</description>
     <author email="phu.tran@openfireco.com" href="http://openfireco.com">OpenFire</author>
@@ -12,7 +12,6 @@
     <preference name="Fullscreen" value="true" />
     
     <!--plugin name="cordova-plugin-camera" source="npm" spec="~2.1.1" /-->
-    <plugin name="cordova-plugin-wkwebview-engine"/>
     <plugin name="cordova-plugin-camera" spec="~2.3.1" />
     <!--plugin name="cordova-plugin-console" source="npm" spec="~1.0.2" />
     <plugin name="cordova-plugin-file" source="npm" spec="~4.1.1" />
@@ -41,15 +40,6 @@
     <feature name="http://api.phonegap.com/1.0/file"/>
     <feature name="http://api.phonegap.com/1.0/geolocation"/>
     <feature name="http://api.phonegap.com/1.0/network"/>
-  
-    <!--plugin name="cordova-plugin-camera" spec="~4.0.3" />
-    <plugin name="cordova-plugin-console" spec="~1.1.0" />
-    <plugin name="cordova-plugin-file" spec="~6.0.1" />
-    <plugin name="cordova-plugin-file-transfer" spec="~1.7.1" />
-    <plugin name="cordova-plugin-geolocation" spec="~4.0.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="~5.0.2" />
-    <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
-    <plugin name="cordova-plugin-whitelist" spec="~1.3.3" /-->
   
     <platform name="ios">
       <icon src="res/icon/ios/icon-1024.png" width="1024" height="1024"/>

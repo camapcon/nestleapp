@@ -1,0 +1,279 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Quay lại</span>
+          </a>
+        </div>
+        <div class="title">Báo cáo Extra</div>
+        <div class="right">
+          <a href="#" class="link icon-only panel-open" data-panel="right">
+            <i class="icon f7-icons ios-only">menu</i>
+            <i class="icon material-icons md-only">menu</i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="page-content grid-report">
+
+      <div class="block">
+        <div class="list no-hairlines-md">
+          <ul>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Chương trình báo cáo</div>
+                <div class="item-input-wrap input-dropdown-wrap">
+                  <select id="programid" onchange="if(this.value=='1') {$('#billphoto').show();} else {$('#billphoto').hide();}">
+                    {{#each extra_programs}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Phần quà</div>
+                <div class="item-input-wrap input-dropdown-wrap">
+                  <select id="productid">
+                    {{#each products}}
+                    <option value="{{this.id}}">{{this.sku}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Số lượng</div>
+                <div class="item-input-wrap">
+                  <input id="qty" type="tel" value="1">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Tên khách hàng</div>
+                <div class="item-input-wrap">
+                  <input id="fullname" type="text">
+                </div>
+              </div>
+            </li>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-title item-label">Số điện thoại</div>
+                <div class="item-input-wrap">
+                  <input id="phone" type="tel">
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="card" id="billphoto">
+        <div class="card-header">Chụp hình hoá đơn</div>
+        <div class="card-content">
+          <div class="block" style="padding: 10px;">
+            <div class="row">
+              <div class="col"><a id="camera1" @click="camera(1);" class="image-holder"></a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-title">Ghi chú</div>
+        <div class="list no-hairlines-md">
+          <ul>
+            <li class="item-content item-input">
+              <div class="item-inner">
+                <div class="item-input-wrap">
+                  <textarea id="note" placeholder="nội dung ghi chú"></textarea>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="block">
+        <p class="row">
+          <button class="col button button-big button-raised button-fill" @click="submit">Gửi báo cáo</button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</template>
+<script>
+  return {
+    data: function() {
+      return {
+       uploaded: 0,
+       upload_total: 0,
+       extra_programs: this.$app.data.preload.extra_programs,
+       products: this.$app.data.preload.products[5]
+      }
+    },
+    // Component Methods
+    methods: {
+      camera: function(index) {
+        var self = this;
+        var $ = this.$;
+        var app = this.$app;
+        var router = this.$router;
+        navigator.camera.getPicture(function(fileURI){
+          $('#camera'+index).html('<img src="'+fileURI+'" data-uri="'+fileURI+'" style="width:16vw; height:16vw;"/>');
+        }, function(message) {
+         app.dialog.alert('Không nhận được hình chụp từ Camera', 'Báo lỗi');
+        }, {
+           quality: 50,
+           correctOrientation: true,
+           destinationType: navigator.camera.DestinationType.FILE_URI,
+           sourceType: Camera.PictureSourceType.CAMERA
+        });
+      },
+      showToastBottom: function (text, closed) {
+        var self = this;
+        // Create toast
+        if (!self.toastBottom) {
+          self.toastBottom = self.$app.toast.create({
+            icon: self.$theme.ios ? '<i class="f7-icons">check</i>' : '<i class="material-icons">check</i>',
+            text: text,
+            position: 'center',
+            closeTimeout: 2000,
+            animate: true,
+            on:{
+              closed:closed
+            }
+          });
+        }
+        // Open it
+        self.toastBottom.open();
+      },
+      submit: function () {
+        var self = this;
+        var $ = this.$;
+        var app = this.$app;
+        var router = this.$router;
+        var token = localStorage.getItem("token");
+        var productid = $('#productid').val();
+        var fullname = $('#fullname').val();
+        var phone = $('#phone').val();
+        var qty = $('#qty').val();
+        if(fullname==''){
+          app.dialog.alert('Vui lòng nhập tên khách hàng', 'Nhắc nhở');
+          return;
+        }
+        if(phone==''){
+          app.dialog.alert('Vui lòng nhập số điện thoại', 'Nhắc nhở');
+          return;
+        }
+        if(qty==''){
+          app.dialog.alert('Vui lòng nhập số lượng quà', 'Nhắc nhở');
+          return;
+        }
+        if($('#programid').val()=='1')
+        {
+          self.uploaded = 0;
+          self.upload_total = $('img[data-uri]').length;
+          if(self.upload_total==0)
+          {
+            app.dialog.alert('Bạn chưa chụp hình hoá đơn', 'Báo lỗi');
+            return;
+          }
+          try{
+            self.upload(0);
+          }
+          catch(e){app.dialog.alert(e.message, 'Báo lỗi');}
+        }
+        else
+        {
+          app.request.post('http://nestle.liveapps.top/index.php/app/extra_report', { 
+              productid:productid, qty:qty, fullname:fullname, phone:phone, note:$('#note').val(), programid:$('#programid').val(), token:token
+            }, function (raw) {
+              try{
+                if(raw=='success'){
+                  self.showToastBottom('Báo cáo thành công', function(){
+                    router.back('/status/', {reloadAll:true, ignoreCache:true});
+                  });
+                  return;
+                }
+                app.dialog.alert('Gửi báo cáo không thành công', 'Báo lỗi');
+              }
+              catch(e){
+                app.dialog.alert(e.message, 'Báo lỗi');
+              }
+          });
+        }
+      },
+      upload: function(index){
+        var self = this;
+        var $ = this.$;
+        var app = this.$app;
+        var router = this.$router;
+        var files = $('img[data-uri]');
+        var fileURI = $(files[index]).data('uri');
+        self.uploaded++;
+        app.dialog.preloader('Đang gửi hình '+self.uploaded+'/'+self.upload_total);
+        var options = {
+          fileKey: "photo",
+          fileName: fileURI.substr(fileURI.lastIndexOf('/') + 1),
+          mimeType: "image/jpeg",
+          headers: { Connection: "close", token:token, qty:$('#qty').val(), productid:$('#productid').val(), programid:$('#programid').val(), fullname:$('#fullname').val(), phone:$('#phone').val(), note:$('#note').val() },
+          httpMethod: "POST",
+          chunkedMode: false
+        };
+        var ft = new FileTransfer();
+        ft.upload(fileURI, encodeURI("http://nestle.liveapps.top/index.php/app/extra_photo"), function(raw){
+          app.dialog.close();
+          if(raw.response=='invalid'){
+            app.dialog.alert('Phiên làm việc đã hết hạn', 'Báo lỗi', function(){
+              router.navigate('/login/');
+            });
+            return;
+          }
+          if(raw.response=='failed'){
+            app.dialog.alert('Không gửi được hình chụp từ Camera', 'Báo lỗi');
+            return;
+          }
+          //app.dialog.alert(raw.response);
+          if(raw.response=='success'){
+            app.dialog.close();
+            if(index+1 < self.upload_total)
+              self.upload(index+1);
+            else{
+              self.showToastBottom('Báo cáo thành công', function(){
+                router.back('/status/', {reloadAll:true, ignoreCache:true});
+              });
+            }
+          }
+        }, function(error){
+          app.dialog.close();
+          app.dialog.alert('Không gửi được hình (' + error.code + ')', 'Báo lỗi');
+          /*
+          app.dialog.alert(error.code, 'Code');
+          app.dialog.alert(error.source, 'Source');
+          app.dialog.alert(error.target, 'Target');
+          app.dialog.alert(error.exception, 'Exception');
+          */
+        }, options, true);
+      }
+    },
+    on: {
+      pageBeforeOut: function () {
+        var self = this;
+        self.$app.toast.close();
+      },
+      pageBeforeRemove: function () {
+        var self = this;
+        // Destroy toasts when page removed
+        if (self.toastBottom) self.toastBottom.destroy();
+      }
+    }
+  }
+</script>

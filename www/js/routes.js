@@ -10,6 +10,11 @@ var routes = [
     componentUrl: './pages/photo.html',
     name: 'photo'
   },
+  {
+    path: '/extra_photo/',
+    componentUrl: './pages/extra_photo.html',
+    name: 'extra_photo'
+  },
   // Login page
   {
     path: '/login/',

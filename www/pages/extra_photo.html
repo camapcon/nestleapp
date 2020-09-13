@@ -74,17 +74,29 @@
         </div>
       </div>
       
-      <div class="card" id="billphoto">
-        <div class="card-header">Chụp hình hoá đơn</div>
-        <div class="card-content">
-          <div class="block" style="padding: 10px;">
-            <div class="row">
-              <div class="col"><a id="camera1" @click="camera(1);" class="image-holder"></a></div>
+        <div id="billphoto">
+          <div class="card">
+            <div class="card-header">Chụp hình hoá đơn</div>
+            <div class="card-content">
+              <div class="block" style="padding: 10px;">
+                <div class="row">
+                  <div class="col"><a id="camera1" @click="camera(1);" class="image-holder"></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">Chọn hình chụp sẵn</div>
+            <div class="card-content">
+              <div class="block" style="padding: 10px;">
+                <div class="row">
+                  <div class="col"><a id="library1" @click="library(1);" class="image-holder lib"></a></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+        
       <div class="block">
         <div class="block-title">Ghi chú</div>
         <div class="list no-hairlines-md">
@@ -137,6 +149,22 @@
            sourceType: Camera.PictureSourceType.CAMERA
         });
       },
+      library: function(index) {
+        var self = this;
+        var $ = this.$;
+        var app = this.$app;
+        var router = this.$router;
+        navigator.camera.getPicture(function(fileURI){
+          $('#library'+index).html('<img src="'+fileURI+'" data-uri="'+fileURI+'" style="width:16vw; height:16vw;"/>');
+        }, function(message) {
+         app.dialog.alert('Không nhận được hình chụp từ thư viện', 'Báo lỗi');
+        }, {
+           quality: 50,
+           correctOrientation: true,
+           destinationType: navigator.camera.DestinationType.FILE_URI,
+           sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        });
+      },
       showToastBottom: function (text, closed) {
         var self = this;
         // Create toast
@@ -187,7 +215,10 @@
             return;
           }
           try{
-            self.upload(0);
+            if(self.upload_total == 2)
+                self.upload(1);
+            else
+                self.upload(0);
           }
           catch(e){app.dialog.alert(e.message, 'Báo lỗi');}
         }
